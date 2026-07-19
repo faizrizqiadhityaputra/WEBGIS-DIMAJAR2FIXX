@@ -1,12 +1,18 @@
 {
   "version": 2,
-  "framework": null,
+  "installCommand": "npm install && npm run build",
+  "buildCommand": "echo 'Build selesai'",
+  "outputDirectory": "public/build",
   "functions": {
-    "api/index.php": {
+    "api/*.php": {
       "runtime": "vercel-php@0.6.0"
     }
   },
   "routes": [
+    {
+      "src": "/build/(.*)",
+      "dest": "/build/$1"
+    },
     {
       "src": "/(.*)",
       "dest": "/api/index.php"
@@ -15,12 +21,7 @@
   "env": {
     "APP_ENV": "production",
     "APP_DEBUG": "false",
-    "APP_URL": "https://nama-project-anda.vercel.app",
-    "APP_CONFIG_CACHE": "/tmp/config.php",
-    "APP_EVENTS_CACHE": "/tmp/events.php",
-    "APP_PACKAGES_CACHE": "/tmp/packages.php",
-    "APP_ROUTES_CACHE": "/tmp/routes.php",
-    "APP_SERVICES_CACHE": "/tmp/services.php",
+    "APP_URL": "https://webgis-dimajar2.vercel.app",
     "VIEW_COMPILED_PATH": "/tmp",
     "CACHE_DRIVER": "array",
     "LOG_CHANNEL": "stderr",
