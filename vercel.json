@@ -5,7 +5,11 @@
   "outputDirectory": "public/build",
   "functions": {
     "api/*.php": {
-      "runtime": "vercel-php@0.6.0"
+      "runtime": "vercel-php@0.6.0",
+      "config": {
+        "maxDuration": 30,
+        "memory": 1024
+      }
     }
   },
   "routes": [
@@ -25,6 +29,7 @@
     "VIEW_COMPILED_PATH": "/tmp",
     "CACHE_DRIVER": "array",
     "LOG_CHANNEL": "stderr",
-    "SESSION_DRIVER": "cookie"
+    "SESSION_DRIVER": "cookie",
+    "NODE_VERSION": "20.x"
   }
 }
