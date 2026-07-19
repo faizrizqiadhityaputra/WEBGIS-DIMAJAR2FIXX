@@ -5,7 +5,7 @@
   "outputDirectory": "public/build",
   "functions": {
     "api/*.php": {
-      "runtime": "vercel-php@0.6.0",
+      "runtime": "vercel-php@0.7.0",
       "config": {
         "maxDuration": 30,
         "memory": 1024
@@ -15,7 +15,7 @@
   "routes": [
     {
       "src": "/build/(.*)",
-      "dest": "/build/$1"
+      "dest": "/public/build/$1"
     },
     {
       "src": "/(.*)",
