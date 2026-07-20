@@ -20,7 +20,7 @@
   ],
   "env": {
     "APP_ENV": "production",
-    "APP_DEBUG": "false",
+    "APP_DEBUG": "true",
     "APP_URL": "https://webgis-dimajar-2-fix.vercel.app",
     "VIEW_COMPILED_PATH": "/tmp",
     "CACHE_DRIVER": "array",
