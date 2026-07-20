@@ -1,23 +1,42 @@
 <?php
 
-$_SERVER['HTTP_ACCEPT'] = 'application/json';
-putenv('APP_DEBUG=true');
+use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 
-// 1. Buat folder sementara di /tmp khusus untuk Vercel Serverless
+define('LARAVEL_START', microtime(true));
+
+// Folder storage sementara untuk Vercel
 $tmpStorage = '/tmp/storage';
-if (!is_dir($tmpStorage)) {
-    mkdir($tmpStorage . '/framework/views', 0755, true);
-    mkdir($tmpStorage . '/framework/cache', 0755, true);
-    mkdir($tmpStorage . '/framework/sessions', 0755, true);
-    mkdir($tmpStorage . '/logs', 0755, true);
+
+if (! is_dir($tmpStorage.'/framework/views')) {
+    mkdir($tmpStorage.'/framework/views', 0777, true);
 }
 
-// Load Composer & Bootstrap Laravel seperti biasa
-require __DIR__ . '/../vendor/autoload.php';
-$app = require_once __DIR__ . '/../bootstrap/app.php';
+if (! is_dir($tmpStorage.'/framework/cache')) {
+    mkdir($tmpStorage.'/framework/cache', 0777, true);
+}
 
-// 2. TAMBAHKAN BARIS INI: Paksa Laravel menggunakan storage di /tmp
+if (! is_dir($tmpStorage.'/framework/sessions')) {
+    mkdir($tmpStorage.'/framework/sessions', 0777, true);
+}
+
+if (! is_dir($tmpStorage.'/logs')) {
+    mkdir($tmpStorage.'/logs', 0777, true);
+}
+
+// Maintenance mode
+if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) {
+    require $maintenance;
+}
+
+// Composer
+require __DIR__.'/../vendor/autoload.php';
+
+/** @var Application $app */
+$app = require_once __DIR__.'/../bootstrap/app.php';
+
+// Pindahkan storage ke /tmp
 $app->useStoragePath($tmpStorage);
 
-// Jalankan aplikasi
-$app->handleRequest(Illuminate\Http\Request::capture());
+// Jalankan Laravel
+$app->handleRequest(Request::capture());

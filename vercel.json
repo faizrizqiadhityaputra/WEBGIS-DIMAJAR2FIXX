@@ -1,11 +1,8 @@
 {
   "version": 2,
-  "installCommand": "npm install && npm run build",
-  "buildCommand": "echo 'Build selesai'",
-  "outputDirectory": "public/build",
   "functions": {
-    "api/*.php": {
-      "runtime": "vercel-php@0.6.2",
+    "api/index.php": {
+      "runtime": "vercel-php@0.7.3",
       "memory": 1024,
       "maxDuration": 30
     }
@@ -19,15 +16,5 @@
       "src": "/(.*)",
       "dest": "/api/index.php"
     }
-  ],
-  "env": {
-    "APP_ENV": "production",
-    "APP_DEBUG": "true",
-    "APP_URL": "https://webgis-dimajar-2-fix.vercel.app",
-    "VIEW_COMPILED_PATH": "/tmp",
-    "CACHE_DRIVER": "array",
-    "LOG_CHANNEL": "stderr",
-    "SESSION_DRIVER": "cookie",
-    "NODE_VERSION": "24.x"
-  }
+  ]
 }
