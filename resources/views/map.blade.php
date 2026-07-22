@@ -318,7 +318,7 @@
         .attr-val { font-size: 1.05rem; font-weight: 800; color: var(--secondary); }
 
         /* ===============================================================
-           GAYA BARU: KARTU UNDUH PDF (LIST)
+           4. GAYA KARTU UNDUH PDF (LIST)
         =============================================================== */
         .pdf-download-card {
             background: rgba(255, 255, 255, 0.85);
@@ -371,11 +371,11 @@
         }
 
         /* ===============================================================
-           4. VIDEO PROFIL
+           5. VIDEO PROFIL
         =============================================================== */
         .video-profile-wrapper { max-width: 900px; margin: 0 auto; }
         .profile-card { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(15px); border-radius: 36px; border: 1px solid rgba(255,255,255,1); box-shadow: 0 30px 60px -15px rgba(0,0,0,0.1), 0 0 0 10px rgba(255,255,255,0.4); overflow: hidden; }
-        .video-container { position: relative; width: 100%; padding-bottom: 56.25%; /* Rasio 16:9 */ border-radius: 16px; overflow: hidden; background-color: #000; border: 2px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+        .video-container { position: relative; width: 100%; padding-bottom: 56.25%; border-radius: 16px; overflow: hidden; background-color: #000; border: 2px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
         /* FOOTER */
@@ -624,7 +624,7 @@
                 <div class="map-console-grid">
                     <div class="map-shell">
                         <div id="map"></div>
-                        <div class="map-readout" id="readCoord">LAT: -7.79560 | LON: 110.36950</div>
+                        <div class="map-readout" id="readCoord">LAT: -7.55350 | LON: 110.16800</div>
                         <div class="map-epsg-badge">EPSG:4326</div>
                     </div>
 
@@ -936,65 +936,341 @@
         });
 
         // ---------------------------------------------------------------
-        // 4. INISIALISASI PETA LEAFLET
+        // 4. INISIALISASI PETA LEAFLET (FOKUS KE TEMPURAN MAGELANG)
         // ---------------------------------------------------------------
-        var map = L.map('map', { center: [-7.7956, 110.3695], zoom: 16, zoomControl: false });
+        var map = L.map('map', {
+            center: [-7.55350, 110.16800], // Telah disesuaikan tepat ke wilayah Tempuran, Magelang
+            zoom: 16.5,
+            zoomControl: false
+        });
         L.control.zoom({ position: 'bottomright' }).addTo(map);
 
         var googleSat = L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
-            maxZoom: 20, subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+            maxZoom: 20,
+            subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
             attribution: '&copy; Google'
         });
         googleSat.addTo(map);
 
         var readCoord = document.getElementById('readCoord');
-        map.on('mousemove', function (e) {
-            readCoord.textContent = `LAT: ${e.latlng.lat.toFixed(5)} | LON: ${e.latlng.lng.toFixed(5)}`;
-        });
+        if (readCoord) {
+            map.on('mousemove', function (e) {
+                readCoord.textContent = `LAT: ${e.latlng.lat.toFixed(5)} | LON: ${e.latlng.lng.toFixed(5)}`;
+            });
+        }
 
-        var layerListrik = L.layerGroup().addTo(map);
-        var layerPekerjaan = L.layerGroup().addTo(map);
-        var layerHunian = L.layerGroup();
-        var layerAir = L.layerGroup();
-        var layerTopografi = L.layerGroup();
+        // ---------------------------------------------------------------
+        // 5. DEFINISI GROUP LAYER
+        // ---------------------------------------------------------------
+        var layerListrik = L.layerGroup().addTo(map);   // Checked default
+        var layerPekerjaan = L.layerGroup().addTo(map); // Checked default
+        var layerHunian = L.layerGroup();               // Unchecked default
+        var layerAir = L.layerGroup();                  // Unchecked default
+        var layerTopografi = L.layerGroup();            // Unchecked default
 
-        var layerGroups = { listrik: layerListrik, pekerjaan: layerPekerjaan, hunian: layerHunian, air: layerAir, topografi: layerTopografi };
+        var layerGroups = {
+            listrik: layerListrik,
+            pekerjaan: layerPekerjaan,
+            hunian: layerHunian,
+            air: layerAir,
+            topografi: layerTopografi
+        };
 
+        // ---------------------------------------------------------------
+        // 6. KONFIGURASI LEGENDA & WARNA
+        // ---------------------------------------------------------------
         var layerConfig = {
-            listrik: { label: '⚡ Daya Listrik', swatchType: 'round', legend: [ { c: '#EF4444', l: '≤ 450 VA' }, { c: '#F97316', l: '451–900 VA' }, { c: '#EAB308', l: '901–1300 VA' }, { c: '#22C55E', l: '> 1300 VA' } ] },
-            pekerjaan: { label: '💼 Jumlah Bekerja / Pekerjaan', swatchType: 'round', legend: [ { c: '#16A34A', l: 'Sektor Pertanian / Petani' }, { c: '#F59E0B', l: 'Sektor Swasta / Buruh' }, { c: '#3B82F6', l: 'PNS / ASN / Perangkat' }, { c: '#8B5CF6', l: 'Lainnya / Belum Bekerja' } ] },
-            hunian: { label: '🏡 Kepadatan Hunian', swatchType: 'square', legend: [ { c: '#990000', l: 'Kerapatan Sangat Tinggi' }, { c: '#E11D48', l: 'Kerapatan Tinggi / Sedang' }, { c: '#FBBF24', l: 'Kerapatan Rendah / Renggang' } ] },
-            air: { label: '💧 Sumber Air Bersih', swatchType: 'round', legend: [ { c: '#0891B2', l: 'Sumur Gali / Mata Air Warga' }, { c: '#38BDF8', l: 'Saluran Pipa Distribusi' } ] },
-            topografi: { label: '⛰️ Topografi & Lereng', swatchType: 'line', legend: [ { c: '#16A34A', l: 'Garis Kontur Elevasi & Lereng' } ] }
+            listrik: {
+                label: '⚡ Daya Listrik',
+                swatchType: 'round',
+                legend: [
+                    { c: '#CBD5E1', l: '0 / Belum Terpasang' },
+                    { c: '#93C5FD', l: '450 VA' },
+                    { c: '#A855F7', l: '900 VA' },
+                    { c: '#581C87', l: '1300 VA' }
+                ]
+            },
+            pekerjaan: {
+                label: '💼 Jumlah Bekerja',
+                swatchType: 'round',
+                legend: [
+                    { c: '#F8FAFC', l: '0 Anggota' },
+                    { c: '#86EFAC', l: '1 Anggota Bekerja' },
+                    { c: '#22C55E', l: '2 Anggota Bekerja' },
+                    { c: '#14532D', l: '3+ Anggota Bekerja' }
+                ]
+            },
+            hunian: {
+                label: '👨‍👩‍👧‍👦 Kepadatan Hunian (Anggota Keluarga)',
+                swatchType: 'square',
+                legend: [
+                    { c: '#FED7AA', l: '1 - 2 Jiwa (Rendah)' },
+                    { c: '#FB923C', l: '3 - 4 Jiwa (Sedang)' },
+                    { c: '#EA580C', l: '5 - 6 Jiwa (Padat)' },
+                    { c: '#9A3412', l: '> 6 Jiwa (Sangat Padat)' }
+                ]
+            },
+            air: {
+                label: '💧 Sumber Air Bersih',
+                swatchType: 'round',
+                legend: [
+                    { c: '#38BDF8', l: 'Sumur Gali' },
+                    { c: '#1D4ED8', l: 'Sumur Bor' },
+                    { c: '#1E3A8A', l: 'Sungai / Mata Air' },
+                    { c: '#94A3B8', l: 'Lainnya / Tidak Diketahui' }
+                ]
+            },
+            topografi: {
+                label: '⛰️ Topografi & Lereng',
+                swatchType: 'square',
+                legend: [
+                    { c: '#4ADE80', l: '0 - 8% (Datar)' },
+                    { c: '#FACC15', l: '8 - 15% (Landai)' },
+                    { c: '#FB923C', l: '15 - 25% (Agak Curam)' },
+                    { c: '#EF4444', l: '> 25% (Curam)' }
+                ]
+            }
         };
 
         function updateObjekPanel(title, subtitle, htmlContent) {
-            document.getElementById('objekContent').innerHTML = `<div class="mb-2"><span class="legend-heading" style="margin:0;">${subtitle}</span></div><h6 class="fw-bold mb-3" style="color:var(--secondary);">${title}</h6>${htmlContent}`;
+            const objekContent = document.getElementById('objekContent');
+            if (!objekContent) return;
+
+            objekContent.innerHTML = `
+                <div class="mb-2"><span class="legend-heading" style="margin:0;">${subtitle}</span></div>
+                <h6 class="fw-bold mb-3" style="color:var(--secondary);">${title}</h6>
+                ${htmlContent}
+            `;
             showPanelTab('objek');
         }
 
-        fetch('/api/bangunan').then(res => res.json()).then(data => {
-            L.geoJSON(data, { pointToLayer: function (f, latlng) { let va = parseInt(f.properties.daya_listrik) || 0; let color = va <= 450 ? "#EF4444" : va <= 900 ? "#F97316" : va <= 1300 ? "#EAB308" : "#22C55E"; return L.circleMarker(latlng, { radius: 7, fillColor: color, color: "#fff", weight: 2, fillOpacity: 0.95 }); }, onEachFeature: function (f, l) { l.on('click', function (e) { L.DomEvent.stopPropagation(e); let p = f.properties; updateObjekPanel(`Bangunan #${p.id_bangunan}`, "TEMA DAYA LISTRIK", `<div class="attr-box"><span class="attr-label">Nomor Bangunan</span><span class="attr-val">#${p.id_bangunan || '-'}</span></div><div class="attr-box"><span class="attr-label">Daya Listrik</span><span class="attr-val" style="color:#D97706;">${p.daya_listrik || 0} VA</span></div><div class="attr-box"><span class="attr-label">Kepala Keluarga</span><span class="attr-val">${p.nama_kk || 'Warga'}</span></div>`); map.flyTo(e.latlng, 18); }); } }).addTo(layerListrik);
-            L.geoJSON(data, { pointToLayer: function (f, latlng) { let job = (f.properties.pekerjaan || '').toLowerCase(); let color = job.includes('petani') ? "#16A34A" : job.includes('buruh') ? "#F59E0B" : job.includes('pns') ? "#3B82F6" : "#8B5CF6"; return L.circleMarker(latlng, { radius: 7, fillColor: color, color: "#fff", weight: 2, fillOpacity: 0.95 }); }, onEachFeature: function (f, l) { l.on('click', function (e) { L.DomEvent.stopPropagation(e); let p = f.properties; updateObjekPanel(`Bangunan #${p.id_bangunan}`, "TEMA JUMLAH BEKERJA", `<div class="attr-box"><span class="attr-label">Nomor Bangunan</span><span class="attr-val">#${p.id_bangunan || '-'}</span></div><div class="attr-box"><span class="attr-label">Kepala Keluarga</span><span class="attr-val">${p.nama_kk || 'Warga'}</span></div><div class="attr-box"><span class="attr-label">Sektor Pekerjaan</span><span class="attr-val" style="color:#16A34A;">${p.pekerjaan || '-'}</span></div>`); map.flyTo(e.latlng, 18); }); } }).addTo(layerPekerjaan);
-            L.geoJSON(data, { pointToLayer: function (f, latlng) { return L.circleMarker(latlng, { radius: 8, fillColor: "#E11D48", color: "#fff", weight: 2, fillOpacity: 0.85 }); }, onEachFeature: function (f, l) { l.on('click', function (e) { L.DomEvent.stopPropagation(e); let p = f.properties; updateObjekPanel(`Bangunan #${p.id_bangunan}`, "TEMA KEPADATAN HUNIAN", `<div class="attr-box"><span class="attr-label">Nomor Bangunan</span><span class="attr-val">#${p.id_bangunan || '-'}</span></div><div class="attr-box"><span class="attr-label">Jumlah Penghuni</span><span class="attr-val">${p.jml_anggota || 0} Jiwa</span></div><div class="attr-box"><span class="attr-label">Status Hunian</span><span class="attr-val" style="color:#E11D48;">Permukiman Warga</span></div>`); map.flyTo(e.latlng, 18); }); } }).addTo(layerHunian);
-            L.geoJSON(data, { pointToLayer: function (f, latlng) { return L.circleMarker(latlng, { radius: 6, fillColor: "#0891B2", color: "#fff", weight: 2, fillOpacity: 0.9 }); }, onEachFeature: function (f, l) { l.on('click', function (e) { L.DomEvent.stopPropagation(e); let p = f.properties; updateObjekPanel(`Titik Air #${p.id_bangunan}`, "TEMA SUMBER AIR BERSIH", `<div class="attr-box"><span class="attr-label">Nomor Bangunan / Lokasi</span><span class="attr-val">#${p.id_bangunan || '-'}</span></div><div class="attr-box"><span class="attr-label">Sumber Air</span><span class="attr-val" style="color:#0891B2;">Sumur Gali / Mata Air</span></div>`); map.flyTo(e.latlng, 18); }); } }).addTo(layerAir);
-        }).catch(e => console.log("API offline", e));
+        // FUNGSI KHUSUS AGAR PETA OTOMATIS BERGESER & NGE-ZOOM TEPAT KE DATA DUSUN DIMAJAR 2
+        let hasAutoZoomed = false;
+        function autoFocusToData(layer) {
+            if (!hasAutoZoomed && layer && layer.getBounds && layer.getBounds().isValid()) {
+                map.fitBounds(layer.getBounds(), { padding: [40, 40], maxZoom: 18 });
+                hasAutoZoomed = true;
+            }
+        }
 
-        fetch('/api/topografi').then(res => res.json()).then(data => { L.geoJSON(data, { style: { color: "#16A34A", weight: 2.5, opacity: 0.85, dashArray: '6, 6' }, onEachFeature: function (f, l) { l.on('click', function (e) { L.DomEvent.stopPropagation(e); let p = f.properties; updateObjekPanel("Garis Kontur & Lereng", "TEMA TOPOGRAFI", `<div class="attr-box"><span class="attr-label">Elevasi Ketinggian</span><span class="attr-val" style="color:#16A34A;">${p.elevasi || 0} mdpl</span></div>`); }); } }).addTo(layerTopografi); }).catch(e => console.log("API offline", e));
+        // ---------------------------------------------------------------
+        // 7. PEMANGGILAN DATA GEOJSON VIA FETCH API + AUTO FOCUS
+        // ---------------------------------------------------------------
 
-        function updateActiveCountBadge() { document.getElementById('activeCountBadge').textContent = document.querySelectorAll('.layer-toggle:checked').length; }
-        function renderLegend() { const container = document.getElementById('legendContainer'); const checkedKeys = [...document.querySelectorAll('.layer-toggle:checked')].map(c => c.dataset.layer); if (checkedKeys.length === 0) { container.innerHTML = '<p class="panel-empty">Aktifkan minimal satu layer untuk menampilkan legenda.</p>'; return; } container.innerHTML = checkedKeys.map(key => { const cfg = layerConfig[key]; const rows = cfg.legend.map(item => `<div class="legend-row"><span class="legend-swatch ${cfg.swatchType}" style="background:${item.c}"></span>${item.l}</div>`).join(''); return `<div class="legend-block"><div class="legend-heading">${cfg.label}</div>${rows}</div>`; }).join(''); }
-        document.querySelectorAll('.layer-toggle').forEach(chk => { chk.addEventListener('change', function () { const key = this.dataset.layer; if (this.checked) map.addLayer(layerGroups[key]); else map.removeLayer(layerGroups[key]); renderLegend(); updateActiveCountBadge(); }); });
-        function setAllLayers(state) { document.querySelectorAll('.layer-toggle').forEach(chk => { chk.checked = state; const key = chk.dataset.layer; if (state) map.addLayer(layerGroups[key]); else map.removeLayer(layerGroups[key]); }); renderLegend(); updateActiveCountBadge(); }
-        function showPanelTab(tab) { document.querySelectorAll('.panel-tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab)); document.querySelectorAll('.panel-pane').forEach(p => p.classList.toggle('d-none', p.dataset.pane !== tab)); }
+        // A. LAYER DAYA LISTRIK (data-layer="listrik")
+        fetch('/geojson/persil_daya_listrik.geojson').then(res => res.json()).then(data => {
+            let geoLayer = L.geoJSON(data, {
+                pointToLayer: function (feature, latlng) {
+                    let va = parseInt(feature.properties.DAYA_LISTRIK || feature.properties.daya_listrik) || 0;
+                    let color = va === 450 ? "#93C5FD" : va === 900 ? "#A855F7" : va >= 1300 ? "#581C87" : "#CBD5E1";
+                    return L.circleMarker(latlng, { radius: 7, fillColor: color, color: "#fff", weight: 1.5, fillOpacity: 0.95 });
+                },
+                onEachFeature: function (feature, layer) {
+                    layer.on('click', function (e) {
+                        L.DomEvent.stopPropagation(e);
+                        let p = feature.properties;
+                        updateObjekPanel(`Persil Bangunan #${p.OBJECTID || p.id || '-'}`, "TEMA DAYA LISTRIK",
+                            `<div class="attr-box">
+                                <span class="attr-label">Daya Terpasang</span>
+                                <span class="attr-val" style="color:#A855F7;">${p.DAYA_LISTRIK || p.daya_listrik || 0} VA</span>
+                             </div>
+                             <div class="attr-box">
+                                <span class="attr-label">Fungsi Bangunan</span>
+                                <span class="attr-val">${p.FUNGSI || p.fungsi || 'Rumah Tinggal'}</span>
+                             </div>`);
+                        map.flyTo(e.latlng, 18.5, { animate: true, duration: 1 });
+                    });
+                }
+            }).addTo(layerListrik);
 
-        renderLegend(); updateActiveCountBadge();
+            // Otomatis arahkan kamera peta ke batas data listrik ini
+            autoFocusToData(geoLayer);
+        }).catch(e => console.warn("File listrik.geojson belum tersedia atau gagal dimuat:", e));
+
+        // B. LAYER JUMLAH BEKERJA (data-layer="pekerjaan")
+        fetch('/geojson/persil_jumlah_bekerja.geojson').then(res => res.json()).then(data => {
+            let geoLayer = L.geoJSON(data, {
+                pointToLayer: function (feature, latlng) {
+                    let kerja = parseFloat(feature.properties.ANGGOTA_BEKERJA || feature.properties.anggota_bekerja) || 0;
+                    let color = kerja <= 0 ? "#F8FAFC" : kerja <= 1 ? "#86EFAC" : kerja <= 2 ? "#22C55E" : "#14532D";
+                    return L.circleMarker(latlng, { radius: 7, fillColor: color, color: "#fff", weight: 1.5, fillOpacity: 0.95 });
+                },
+                onEachFeature: function (feature, layer) {
+                    layer.on('click', function (e) {
+                        L.DomEvent.stopPropagation(e);
+                        let p = feature.properties;
+                        updateObjekPanel(`Persil Bangunan #${p.OBJECTID || p.id || '-'}`, "TEMA JUMLAH BEKERJA",
+                            `<div class="attr-box">
+                                <span class="attr-label">Anggota Bekerja</span>
+                                <span class="attr-val" style="color:#16A34A;">${p.ANGGOTA_BEKERJA || p.anggota_bekerja || 0} Orang</span>
+                             </div>
+                             <div class="attr-box">
+                                <span class="attr-label">Total Anggota Keluarga</span>
+                                <span class="attr-val">${p.JUMLAH_ANGGOTA || p.jumlah_anggota || '-'} Jiwa</span>
+                             </div>`);
+                        map.flyTo(e.latlng, 18.5, { animate: true, duration: 1 });
+                    });
+                }
+            }).addTo(layerPekerjaan);
+
+            autoFocusToData(geoLayer);
+        }).catch(e => console.warn("File pekerjaan.geojson belum tersedia atau gagal dimuat:", e));
+
+        // C. LAYER KEPADATAN HUNIAN (data-layer="hunian")
+        fetch('/geojson/anggota_keluarga.geojson').then(res => res.json()).then(data => {
+            let geoLayer = L.geoJSON(data, {
+                pointToLayer: function (feature, latlng) {
+                    let jml = parseFloat(feature.properties.JUMLAH_ANGGOTA || feature.properties.jumlah_anggota) || 0;
+                    let color = jml <= 2 ? "#FED7AA" : jml <= 4 ? "#FB923C" : jml <= 6 ? "#EA580C" : "#9A3412";
+                    return L.circleMarker(latlng, { radius: 7.5, fillColor: color, color: "#fff", weight: 1.5, fillOpacity: 0.9 });
+                },
+                onEachFeature: function (feature, layer) {
+                    layer.on('click', function (e) {
+                        L.DomEvent.stopPropagation(e);
+                        let p = feature.properties;
+                        updateObjekPanel(`Persil Bangunan #${p.OBJECTID || p.id || '-'}`, "TEMA KEPADATAN HUNIAN",
+                            `<div class="attr-box">
+                                <span class="attr-label">Penghuni / Anggota Keluarga</span>
+                                <span class="attr-val" style="color:#E11D48;">${p.JUMLAH_ANGGOTA || p.jumlah_anggota || 0} Jiwa</span>
+                             </div>
+                             <div class="attr-box">
+                                <span class="attr-label">Status Kepadatan</span>
+                                <span class="attr-val">${(p.JUMLAH_ANGGOTA || 0) > 4 ? 'Padat' : 'Normal / Ideal'}</span>
+                             </div>`);
+                        map.flyTo(e.latlng, 18.5, { animate: true, duration: 1 });
+                    });
+                }
+            }).addTo(layerHunian);
+
+            autoFocusToData(geoLayer);
+        }).catch(e => console.warn("File hunian.geojson belum tersedia atau gagal dimuat:", e));
+
+        // D. LAYER SUMBER AIR BERSIH (data-layer="air")
+        fetch('/geojson/persil_sumber_air.geojson').then(res => res.json()).then(data => {
+            let geoLayer = L.geoJSON(data, {
+                pointToLayer: function (feature, latlng) {
+                    let air = (feature.properties.SUMBER_AIR || feature.properties.sumber_air || '').toLowerCase();
+                    let color = air.includes('gali') ? "#38BDF8" : air.includes('bor') ? "#1D4ED8" : air.includes('sungai') ? "#1E3A8A" : "#94A3B8";
+                    return L.circleMarker(latlng, { radius: 7, fillColor: color, color: "#fff", weight: 1.5, fillOpacity: 0.9 });
+                },
+                onEachFeature: function (feature, layer) {
+                    layer.on('click', function (e) {
+                        L.DomEvent.stopPropagation(e);
+                        let p = feature.properties;
+                        updateObjekPanel(`Persil Bangunan #${p.OBJECTID || p.id || '-'}`, "TEMA SUMBER AIR BERSIH",
+                            `<div class="attr-box">
+                                <span class="attr-label">Jenis Sumber Air</span>
+                                <span class="attr-val" style="color:#0891B2;">${p.SUMBER_AIR || p.sumber_air || 'Tidak Diketahui'}</span>
+                             </div>`);
+                        map.flyTo(e.latlng, 18.5, { animate: true, duration: 1 });
+                    });
+                }
+            }).addTo(layerAir);
+
+            autoFocusToData(geoLayer);
+        }).catch(e => console.warn("File air.geojson belum tersedia atau gagal dimuat:", e));
+
+        // E. LAYER TOPOGRAFI & LERENG (data-layer="topografi")
+        fetch('/geojson/topografi.geojson').then(res => res.json()).then(data => {
+            let geoLayer = L.geoJSON(data, {
+                style: function (feature) {
+                    let lereng = parseFloat(feature.properties.LERENG || feature.properties.lereng || feature.properties.SLOPE) || 0;
+                    let color = lereng <= 8 ? "#4ADE80" : lereng <= 15 ? "#FACC15" : lereng <= 25 ? "#FB923C" : "#EF4444";
+                    return { fillColor: color, weight: 1.5, color: "#166534", fillOpacity: 0.55 };
+                },
+                onEachFeature: function (feature, layer) {
+                    layer.on('click', function (e) {
+                        L.DomEvent.stopPropagation(e);
+                        let p = feature.properties;
+                        updateObjekPanel("Area Topografi / Lereng", "TEMA TOPOGRAFI",
+                            `<div class="attr-box">
+                                <span class="attr-label">Kemiringan Lereng</span>
+                                <span class="attr-val" style="color:#16A34A;">${p.LERENG || p.lereng || p.KETERANGAN || 'Datar - Landai'}</span>
+                             </div>
+                             <div class="attr-box">
+                                <span class="attr-label">Elevasi / Ketinggian</span>
+                                <span class="attr-val">${p.ELEVASI || p.elevasi || p.CONTOUR || '-'} mdpl</span>
+                             </div>`);
+                    });
+                }
+            }).addTo(layerTopografi);
+
+            autoFocusToData(geoLayer);
+        }).catch(e => console.warn("File topografi.geojson belum tersedia atau gagal dimuat:", e));
+
+        // ---------------------------------------------------------------
+        // 8. KONTROL TOGGLE LAYER & RENDER LEGENDA OTOMATIS
+        // ---------------------------------------------------------------
+        function updateActiveCountBadge() {
+            const badge = document.getElementById('activeCountBadge');
+            if (badge) badge.textContent = document.querySelectorAll('.layer-toggle:checked').length;
+        }
+
+        function renderLegend() {
+            const container = document.getElementById('legendContainer');
+            if (!container) return;
+
+            const checkedKeys = [...document.querySelectorAll('.layer-toggle:checked')].map(c => c.dataset.layer);
+            if (checkedKeys.length === 0) {
+                container.innerHTML = '<p class="panel-empty">Aktifkan minimal satu layer untuk menampilkan legenda.</p>';
+                return;
+            }
+
+            container.innerHTML = checkedKeys.map(key => {
+                const cfg = layerConfig[key];
+                if (!cfg) return '';
+                const rows = cfg.legend.map(item => `
+                    <div class="legend-row">
+                        <span class="legend-swatch ${cfg.swatchType}" style="background:${item.c}"></span>${item.l}
+                    </div>`).join('');
+                return `<div class="legend-block"><div class="legend-heading">${cfg.label}</div>${rows}</div>`;
+            }).join('');
+        }
+
+        document.querySelectorAll('.layer-toggle').forEach(chk => {
+            chk.addEventListener('change', function () {
+                const key = this.dataset.layer;
+                if (this.checked && layerGroups[key]) {
+                    map.addLayer(layerGroups[key]);
+                } else if (!this.checked && layerGroups[key]) {
+                    map.removeLayer(layerGroups[key]);
+                }
+                renderLegend();
+                updateActiveCountBadge();
+            });
+        });
+
+        function setAllLayers(state) {
+            document.querySelectorAll('.layer-toggle').forEach(chk => {
+                chk.checked = state;
+                const key = chk.dataset.layer;
+                if (state && layerGroups[key]) map.addLayer(layerGroups[key]);
+                else if (!state && layerGroups[key]) map.removeLayer(layerGroups[key]);
+            });
+            renderLegend();
+            updateActiveCountBadge();
+        }
+
+        function showPanelTab(tab) {
+            document.querySelectorAll('.panel-tab-btn').forEach(b => {
+                b.classList.toggle('active', b.dataset.tab === tab);
+            });
+            document.querySelectorAll('.panel-pane').forEach(p => {
+                p.classList.toggle('d-none', p.dataset.pane !== tab);
+            });
+        }
+
+        renderLegend();
+        updateActiveCountBadge();
 
         var controlPanelCollapse = document.getElementById('controlPanelCollapse');
-        controlPanelCollapse.addEventListener('shown.bs.collapse', () => map.invalidateSize());
-        controlPanelCollapse.addEventListener('hidden.bs.collapse', () => map.invalidateSize());
+        if (controlPanelCollapse) {
+            controlPanelCollapse.addEventListener('shown.bs.collapse', () => map.invalidateSize());
+            controlPanelCollapse.addEventListener('hidden.bs.collapse', () => map.invalidateSize());
+        }
         window.addEventListener('resize', () => map.invalidateSize());
         setTimeout(() => map.invalidateSize(), 400);
     </script>
 </body>
 </html>
+
