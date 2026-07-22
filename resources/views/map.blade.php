@@ -180,10 +180,10 @@
         .btn-nav { background: var(--primary-gradient); color: white !important; padding: 10px 24px; border-radius: 50px; transition: all 0.3s; font-weight: 600; box-shadow: 0 6px 15px var(--primary-glow); border: none; }
         .btn-nav:hover { transform: translateY(-3px); box-shadow: 0 10px 25px var(--primary-glow); }
 
-        /* HERO SECTION DENGAN TRANSISI HALUS */
+        /* HERO SECTION */
         .hero-section {
             position: relative; min-height: 100vh; display: flex; align-items: center; justify-content: center;
-            text-align: center; padding: 120px 20px 60px 20px; overflow: hidden;
+            text-align: center; padding: 120px 20px 40px 20px; overflow: hidden;
             background-color: transparent;
         }
         .hero-bg-img {
@@ -205,7 +205,9 @@
         .btn-hero { background: var(--primary-gradient); color: white; padding: 16px 40px; border-radius: 50px; font-weight: 600; text-decoration: none; transition: all 0.3s; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 10px 25px var(--primary-glow); border: 2px solid transparent; }
         .btn-hero:hover { transform: translateY(-5px); box-shadow: 0 15px 35px var(--primary-glow); color: white; border-color: rgba(255,255,255,0.5); }
 
-        .section-padding { padding: 100px 0; position: relative; z-index: 2; }
+        .section-padding { padding: 50px 0; position: relative; z-index: 2; }
+        @media (max-width: 768px) { .section-padding { padding: 40px 0; } }
+
         .section-badge { display: inline-block; background: var(--primary-light); color: var(--primary-dark); padding: 8px 18px; border-radius: 50px; font-size: 0.85rem; font-weight: 700; margin-bottom: 16px; border: 1px solid rgba(5,150,105,0.2); }
         .section-title { font-weight: 800; font-size: clamp(2rem, 4vw, 2.5rem); margin-bottom: 20px; letter-spacing: -0.02em; line-height: 1.25; text-wrap: balance; }
         .section-title span { color: var(--primary); }
@@ -315,6 +317,67 @@
         .attr-label { font-size: 0.75rem; color: var(--text-mute); font-weight: 700; display: block; margin-bottom: 4px; text-transform: uppercase; }
         .attr-val { font-size: 1.05rem; font-weight: 800; color: var(--secondary); }
 
+        /* ===============================================================
+           GAYA BARU: KARTU UNDUH PDF (LIST)
+        =============================================================== */
+        .pdf-download-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(15px);
+            border-radius: 36px;
+            padding: 30px;
+            border: 1px solid rgba(255,255,255,1);
+            box-shadow: 0 20px 50px -10px rgba(0,0,0,0.08), 0 0 0 8px rgba(255,255,255,0.4);
+            margin-top: 40px;
+        }
+        .btn-download-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            padding: 14px 18px;
+            border-radius: 20px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        }
+        .btn-download-item:hover {
+            background: var(--primary-light);
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(5, 150, 105, 0.15);
+        }
+        .btn-download-item .file-title {
+            font-weight: 700;
+            color: var(--secondary);
+            font-size: 0.95rem;
+            margin-bottom: 2px;
+            transition: color 0.3s ease;
+        }
+        .btn-download-item:hover .file-title {
+            color: var(--primary-dark);
+        }
+        .btn-download-item .file-name {
+            font-size: 0.75rem;
+            color: var(--text-mute);
+            font-family: monospace;
+        }
+        .btn-download-item .dl-icon {
+            color: var(--primary);
+            transition: transform 0.3s ease;
+        }
+        .btn-download-item:hover .dl-icon {
+            transform: scale(1.2) translateY(2px);
+        }
+
+        /* ===============================================================
+           4. VIDEO PROFIL
+        =============================================================== */
+        .video-profile-wrapper { max-width: 900px; margin: 0 auto; }
+        .profile-card { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(15px); border-radius: 36px; border: 1px solid rgba(255,255,255,1); box-shadow: 0 30px 60px -15px rgba(0,0,0,0.1), 0 0 0 10px rgba(255,255,255,0.4); overflow: hidden; }
+        .video-container { position: relative; width: 100%; padding-bottom: 56.25%; /* Rasio 16:9 */ border-radius: 16px; overflow: hidden; background-color: #000; border: 2px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
         /* FOOTER */
         footer { background: var(--secondary); color: white; padding: 60px 0 25px 0; position: relative; z-index: 2; }
         .footer-brand { font-size: 1.5rem; font-weight: 800; color: white; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; margin-bottom: 16px; }
@@ -363,7 +426,7 @@
         </nav>
     </div>
 
-    <!-- HERO SECTION (Teks Persis Seperti Permintaan) -->
+    <!-- HERO SECTION -->
     <header id="beranda" class="hero-section">
         <img src="{{ asset('images/bg-landingpage.png') }}" class="hero-bg-img" alt="Latar Belakang Dimajar 2" onerror="this.style.display='none';">
         <div class="hero-overlay"></div>
@@ -375,13 +438,13 @@
         </div>
     </header>
 
-    <!-- SECTION SEKILAS (Teks Persis Seperti Permintaan - JUDUL DIPERBAIKI SEJAJAR & RAPI) -->
+    <!-- SECTION SEKILAS -->
     <section id="sekilas" class="section-padding" style="background-color: transparent;">
         <div class="container">
             <div class="row align-items-center g-5">
                 <div class="col-lg-6" data-aos="fade-right">
                     <span class="section-badge"><i class="fa-solid fa-circle-info me-1"></i> Sekilas & Profil</span>
-                    <h2 class="section-title">Dari "Demakjar" Menjadi<br><span>Dimajar 2</span></h2>
+                    <h2 class="section-title mb-4">Dari "Demakjar" Menjadi<br><span>Dimajar 2</span></h2>
                     <p class="mb-4" style="line-height: 1.8; font-size: 1.05rem;">Menurut cerita tutur masyarakat dan sesepuh desa, nama Dimajar berakar dari kata <b>"Demakjar"</b>. Alkisah, pada masa lampau seorang Sunan dari Demak pernah singgah di wilayah ini untuk menyebarkan syiar Islam dan mendirikan sebuah masjid. Karena kebiasaan pelafalan masyarakat Jawa yang menyederhanakan sebutan agar lebih mudah diucapkan, kata <i>"Demakjar"</i> lambat laun bertransformasi menjadi <b>Dimajar</b>.</p>
                     <p style="line-height: 1.8; font-size: 1.05rem;">Seiring berjalannya waktu dan wilayahnya yang semakin luas, kawasan ini dimekarkan menjadi tiga wilayah administrasi: Dimajar I, Dimajar II, dan Dimajar III. Dusun Dimajar II sendiri tumbuh menjadi pedusunan yang asri di Kelurahan Sumberarum, Kecamatan Tempuran, Kabupaten Magelang, dengan mayoritas warganya menggantungkan hidup dari sektor pertanian yang subur dan harmonis.</p>
                 </div>
@@ -398,16 +461,16 @@
         </div>
     </section>
 
-    <!-- SECTION SEJARAH (Teks Persis Seperti Permintaan) -->
+    <!-- SECTION SEJARAH -->
     <section class="section-padding">
         <div class="container">
-            <div class="text-center mb-5" data-aos="fade-up">
+            <div class="text-center mb-4" data-aos="fade-up">
                 <span class="section-badge"><i class="fa-solid fa-monument me-1"></i> Jejak Langkah & Cagar Budaya</span>
                 <h2 class="section-title">Saksi Bisu Peradaban & <span>Arsitektur Tunggal</span></h2>
                 <p class="text-muted mx-auto" style="max-width: 700px; font-size: 1.05rem;">Menelusuri peninggalan situs bersejarah dan arsitektur kuno yang menjadi pusat kemaslahatan warga Dusun Dimajar 2.</p>
             </div>
 
-            <div class="row g-4 mb-5">
+            <div class="row g-4 mb-4">
                 <div class="col-lg-6" data-aos="fade-up" data-aos-delay="0">
                     <div class="history-card spotlight-card">
                         <div class="d-flex align-items-center gap-3 mb-3">
@@ -454,10 +517,10 @@
         </div>
     </section>
 
-    <!-- SECTION INFOGRAFIS (Teks Persis Seperti Permintaan) -->
+    <!-- SECTION INFOGRAFIS -->
     <section id="infografis" class="section-padding" style="background-color: transparent;">
         <div class="container">
-            <div class="text-center mb-5" data-aos="fade-up">
+            <div class="text-center mb-4" data-aos="fade-up">
                 <span class="section-badge"><i class="fa-solid fa-chart-pie me-1"></i> Infografis Spasial</span>
                 <h2 class="section-title">Dimajar 2 <span>Dalam Angka</span></h2>
                 <p class="text-muted mx-auto" style="max-width: 600px; font-size: 1.05rem;">Potret karakteristik fisik dan sosial kemasyarakatan Dusun Dimajar 2 yang tercatat dalam pendataan spasial terbaru.</p>
@@ -500,10 +563,10 @@
         </div>
     </section>
 
-    <!-- SECTION FOKUS PEMETAAN (Teks Persis Seperti Permintaan) -->
+    <!-- SECTION FOKUS PEMETAAN -->
     <section class="section-padding">
         <div class="container">
-            <div class="text-center mb-5" data-aos="fade-up">
+            <div class="text-center mb-4" data-aos="fade-up">
                 <span class="section-badge"><i class="fa-solid fa-map-pin me-1"></i> Karakteristik Spasial</span>
                 <h2 class="section-title">Fokus Pemetaan & Potensi <span>Dimajar 2</span></h2>
                 <p class="text-muted mx-auto" style="max-width: 650px; font-size: 1.05rem;">Mengintegrasikan data keruangan untuk mendukung pembangunan dusun yang terukur, partisipatif, dan berkelanjutan.</p>
@@ -538,19 +601,21 @@
         </div>
     </section>
 
-    <!-- KONSOL PETA (Teks Persis Seperti Permintaan) -->
+    <!-- SECTION KONSOL PETA INTERAKTIF & UNDUH PDF -->
     <section id="peta" class="section-padding" style="background-color: transparent;">
         <div class="container">
-            <div class="text-center mb-5" data-aos="fade-up">
+            <div class="text-center mb-4" data-aos="fade-up">
                 <span class="section-badge"><i class="fa-solid fa-earth-asia me-1"></i> Pemetaan Digital</span>
                 <h2 class="section-title">Peta Tematik <span>Interaktif</span></h2>
                 <p class="text-muted mx-auto" style="max-width: 600px; font-size: 1.05rem;">Aktifkan layer peta tematik terbaru di bawah ini, lalu klik objek di peta untuk melihat detail atributnya.</p>
             </div>
 
-            <div class="map-console-wrapper spotlight-card" data-aos="zoom-in" data-aos-duration="800">
+            <!-- Wrapper Peta Interaktif -->
+            <div class="map-console-wrapper spotlight-card mb-5" data-aos="zoom-in" data-aos-duration="800">
                 <div class="map-console-toolbar">
                     <h5 class="font-heading mb-0"><i class="fa-solid fa-map-location-dot text-success me-2"></i>Peta Tematik Dusun</h5>
-                    <button class="btn-panel-toggle d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#controlPanelCollapse">
+
+                    <button class="btn-panel-toggle d-lg-none ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#controlPanelCollapse">
                         <i class="fa-solid fa-sliders me-1"></i> Kontrol Layer
                         <span class="active-layer-count ms-1" id="activeCountBadge">2</span>
                     </button>
@@ -610,10 +675,154 @@
                     </div>
                 </div>
             </div>
+
+            <!-- FITUR BARU: CARD UNDUH PETA CETAK (PDF) -->
+            <div class="pdf-download-card spotlight-card" data-aos="fade-up">
+                <div class="text-center mb-4">
+                    <span class="section-badge"><i class="fa-solid fa-file-pdf me-1"></i> Pusat Unduhan</span>
+                    <h3 class="font-heading" style="font-size: 1.6rem; font-weight: 800; color: var(--secondary);">Unduh Peta Cetak (PDF)</h3>
+                    <p class="text-muted mx-auto" style="max-width: 600px; font-size: 0.95rem;">Dapatkan dokumen peta dasar dan peta tematik Dusun Dimajar 2 dalam format PDF resolusi tinggi (Ukuran A3 & A1).</p>
+                </div>
+
+                <div class="row g-4">
+                    <!-- KOLOM 1: PETA DASAR & ADMINISTRASI -->
+                    <div class="col-lg-6">
+                        <h5 class="fw-bold mb-3 d-flex align-items-center gap-2" style="color: var(--secondary); font-size: 1.1rem;">
+                            <i class="fa-solid fa-layer-group text-primary"></i> Peta Dasar & Wilayah
+                        </h5>
+                        <div class="d-flex flex-column gap-3">
+                            <a href="{{ asset('pdf/A1_Dimajar 2.pdf') }}" class="btn-download-item" download>
+                                <i class="fa-solid fa-file-pdf fa-2x text-danger"></i>
+                                <div class="flex-grow-1">
+                                    <div class="file-title">Peta Administrasi Wilayah (A1)</div>
+                                    <div class="file-name">A1_Dimajar 2.pdf</div>
+                                </div>
+                                <i class="fa-solid fa-download dl-icon fa-lg"></i>
+                            </a>
+                            <a href="{{ asset('pdf/A3_Dimajar2_Admin RTRW_Fix.pdf') }}" class="btn-download-item" download>
+                                <i class="fa-solid fa-file-pdf fa-2x text-danger"></i>
+                                <div class="flex-grow-1">
+                                    <div class="file-title">Peta Administrasi RT/RW</div>
+                                    <div class="file-name">A3_Dimajar2_Admin RTRW_Fix.pdf</div>
+                                </div>
+                                <i class="fa-solid fa-download dl-icon fa-lg"></i>
+                            </a>
+                            <a href="{{ asset('pdf/A3_Dimajar2_Foto Udara_Fix.pdf') }}" class="btn-download-item" download>
+                                <i class="fa-solid fa-file-pdf fa-2x text-danger"></i>
+                                <div class="flex-grow-1">
+                                    <div class="file-title">Peta Foto Udara (Citra)</div>
+                                    <div class="file-name">A3_Dimajar2_Foto Udara_Fix.pdf</div>
+                                </div>
+                                <i class="fa-solid fa-download dl-icon fa-lg"></i>
+                            </a>
+                            <a href="{{ asset('pdf/A3_Dimajar2_Bangunan_Fix.pdf') }}" class="btn-download-item" download>
+                                <i class="fa-solid fa-file-pdf fa-2x text-danger"></i>
+                                <div class="flex-grow-1">
+                                    <div class="file-title">Peta Sebaran Bangunan</div>
+                                    <div class="file-name">A3_Dimajar2_Bangunan_Fix.pdf</div>
+                                </div>
+                                <i class="fa-solid fa-download dl-icon fa-lg"></i>
+                            </a>
+                            <a href="{{ asset('pdf/A3_Dimajar2_Sarpras_Fix.pdf') }}" class="btn-download-item" download>
+                                <i class="fa-solid fa-file-pdf fa-2x text-danger"></i>
+                                <div class="flex-grow-1">
+                                    <div class="file-title">Peta Sarana & Prasarana</div>
+                                    <div class="file-name">A3_Dimajar2_Sarpras_Fix.pdf</div>
+                                </div>
+                                <i class="fa-solid fa-download dl-icon fa-lg"></i>
+                            </a>
+                            <a href="{{ asset('pdf/A3_Dimajar2_PL_Fix.pdf') }}" class="btn-download-item" download>
+                                <i class="fa-solid fa-file-pdf fa-2x text-danger"></i>
+                                <div class="flex-grow-1">
+                                    <div class="file-title">Peta Penggunaan Lahan</div>
+                                    <div class="file-name">A3_Dimajar2_PL_Fix.pdf</div>
+                                </div>
+                                <i class="fa-solid fa-download dl-icon fa-lg"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- KOLOM 2: PETA TEMATIK / ANALISIS -->
+                    <div class="col-lg-6">
+                        <h5 class="fw-bold mb-3 d-flex align-items-center gap-2" style="color: var(--secondary); font-size: 1.1rem;">
+                            <i class="fa-solid fa-map text-success"></i> Peta Tematik & Analisis
+                        </h5>
+                        <div class="d-flex flex-column gap-3">
+                            <a href="{{ asset('pdf/A3_Dimajar2_Daya Listrik_Fix.pdf') }}" class="btn-download-item" download>
+                                <i class="fa-solid fa-file-pdf fa-2x text-danger"></i>
+                                <div class="flex-grow-1">
+                                    <div class="file-title">Peta Daya Listrik</div>
+                                    <div class="file-name">A3_Dimajar2_Daya Listrik_Fix.pdf</div>
+                                </div>
+                                <i class="fa-solid fa-download dl-icon fa-lg"></i>
+                            </a>
+                            <a href="{{ asset('pdf/A3_Dimajar2_Jumlah Bekerja_Fix.pdf') }}" class="btn-download-item" download>
+                                <i class="fa-solid fa-file-pdf fa-2x text-danger"></i>
+                                <div class="flex-grow-1">
+                                    <div class="file-title">Peta Jumlah Bekerja Warga</div>
+                                    <div class="file-name">A3_Dimajar2_Jumlah Bekerja_Fix.pdf</div>
+                                </div>
+                                <i class="fa-solid fa-download dl-icon fa-lg"></i>
+                            </a>
+                            <a href="{{ asset('pdf/A3_Dimajar2_Kepadatan Hunian_Fix.pdf') }}" class="btn-download-item" download>
+                                <i class="fa-solid fa-file-pdf fa-2x text-danger"></i>
+                                <div class="flex-grow-1">
+                                    <div class="file-title">Peta Kepadatan Hunian</div>
+                                    <div class="file-name">A3_Dimajar2_Kepadatan Hunian_Fix.pdf</div>
+                                </div>
+                                <i class="fa-solid fa-download dl-icon fa-lg"></i>
+                            </a>
+                            <a href="{{ asset('pdf/A3_Dimajar2_Sumber Air_Fix.pdf') }}" class="btn-download-item" download>
+                                <i class="fa-solid fa-file-pdf fa-2x text-danger"></i>
+                                <div class="flex-grow-1">
+                                    <div class="file-title">Peta Sumber Air Bersih</div>
+                                    <div class="file-name">A3_Dimajar2_Sumber Air_Fix.pdf</div>
+                                </div>
+                                <i class="fa-solid fa-download dl-icon fa-lg"></i>
+                            </a>
+                            <a href="{{ asset('pdf/A3_Dimajar2_Topografi_Fix.pdf') }}" class="btn-download-item" download>
+                                <i class="fa-solid fa-file-pdf fa-2x text-danger"></i>
+                                <div class="flex-grow-1">
+                                    <div class="file-title">Peta Topografi & Lereng</div>
+                                    <div class="file-name">A3_Dimajar2_Topografi_Fix.pdf</div>
+                                </div>
+                                <i class="fa-solid fa-download dl-icon fa-lg"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </section>
 
-    <!-- FOOTER (Teks Persis Seperti Permintaan) -->
+    <!-- SECTION VIDEO PROFIL -->
+    <section id="video-profil" class="section-padding" style="background-color: transparent;">
+        <div class="container">
+            <div class="video-profile-wrapper" data-aos="fade-up">
+                <div class="card profile-card spotlight-card">
+                    <div class="card-body text-center p-4 p-md-5">
+                        <span class="section-badge mb-3"><i class="fa-brands fa-youtube me-1"></i> Video Profil Dusun</span>
+                        <h3 class="card-title font-heading mb-3" style="font-size: 1.8rem; font-weight: 800; color: var(--secondary);">Mengenal Lebih Dekat Dimajar 2</h3>
+                        <p class="card-text mb-4 text-muted mx-auto" style="max-width: 600px; font-size: 1.05rem;">Saksikan tayangan profil singkat berikut untuk melihat keindahan alam, aktivitas warga, dan potensi luar biasa yang dimiliki oleh Dusun Dimajar 2.</p>
+
+                        <!-- Container Video Responsif -->
+                        <div class="video-container">
+                            <iframe
+                                src="https://www.youtube.com/embed/n-8HkMcfnKE"
+                                title="Video Profil Dimajar 2"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
     <footer>
         <div class="container">
             <div class="row g-4">
