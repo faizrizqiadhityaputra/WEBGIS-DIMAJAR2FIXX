@@ -1,0 +1,221 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "id": 1,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    110.17942873909965,
+                    -7.5672681172600385
+                ]
+            },
+            "properties": {
+                "OBJECTID": 1,
+                "Sub_Unsur": "2",
+                "Kelas": "23",
+                "Toponim": "SD Negeri Sumberarum 2",
+                "Keterangan": null
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 2,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    110.17964120154515,
+                    -7.5702886784523278
+                ]
+            },
+            "properties": {
+                "OBJECTID": 2,
+                "Sub_Unsur": "4",
+                "Kelas": "39",
+                "Toponim": "Masjid Al Barokah",
+                "Keterangan": null
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 3,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    110.18097833617114,
+                    -7.5685663181069014
+                ]
+            },
+            "properties": {
+                "OBJECTID": 3,
+                "Sub_Unsur": "4",
+                "Kelas": "39",
+                "Toponim": "Mushola Al Hidayah",
+                "Keterangan": null
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 4,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    110.18132954984108,
+                    -7.5686052194349536
+                ]
+            },
+            "properties": {
+                "OBJECTID": 4,
+                "Sub_Unsur": "7",
+                "Kelas": "1",
+                "Toponim": "Soerja Paperbag",
+                "Keterangan": null
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 5,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    110.18030568644787,
+                    -7.5685891980576194
+                ]
+            },
+            "properties": {
+                "OBJECTID": 5,
+                "Sub_Unsur": "7",
+                "Kelas": "3",
+                "Toponim": null,
+                "Keterangan": null
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 6,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    110.18013656386979,
+                    -7.5684701601771227
+                ]
+            },
+            "properties": {
+                "OBJECTID": 6,
+                "Sub_Unsur": "7",
+                "Kelas": "3",
+                "Toponim": null,
+                "Keterangan": null
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 7,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    110.18006241561564,
+                    -7.5684852902092503
+                ]
+            },
+            "properties": {
+                "OBJECTID": 7,
+                "Sub_Unsur": "7",
+                "Kelas": "3",
+                "Toponim": null,
+                "Keterangan": null
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 12,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    110.1804634047008,
+                    -7.5701797860776416
+                ]
+            },
+            "properties": {
+                "OBJECTID": 12,
+                "Sub_Unsur": "7",
+                "Kelas": "3",
+                "Toponim": null,
+                "Keterangan": null
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 13,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    110.18017136132775,
+                    -7.5703460507396292
+                ]
+            },
+            "properties": {
+                "OBJECTID": 13,
+                "Sub_Unsur": "7",
+                "Kelas": "3",
+                "Toponim": null,
+                "Keterangan": null
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 15,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    110.17926223430237,
+                    -7.5669250814302149
+                ]
+            },
+            "properties": {
+                "OBJECTID": 15,
+                "Sub_Unsur": "2",
+                "Kelas": "24",
+                "Toponim": "TK PGRI Tunas Harapan I",
+                "Keterangan": null
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 16,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    110.17996029283194,
+                    -7.5703594614839549
+                ]
+            },
+            "properties": {
+                "OBJECTID": 16,
+                "Sub_Unsur": "2",
+                "Kelas": "25",
+                "Toponim": "Madrasah Al Diniyah Al Barokah",
+                "Keterangan": null
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 17,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    110.17967772563664,
+                    -7.5675899506821578
+                ]
+            },
+            "properties": {
+                "OBJECTID": 17,
+                "Sub_Unsur": "7",
+                "Kelas": "3",
+                "Toponim": null,
+                "Keterangan": null
+            }
+        }
+    ]
+}
